@@ -1,19 +1,22 @@
 package com.gridnine.testing;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 
 class FilterImplTest {
 
-    Filter filter = new FilterImpl();
     public List<Flight> list = FlightBuilder.createFlights();
 
     @Test
-    public void test1() {
-        List<Flight> list2 = filter.departingInThePastFilter(list);
+    @DisplayName("Получение списка перелетов, время вылета которых назначено до текущего момента")
+    public void DepartingInThePastTest() {
+
+        List<Flight> list2 = new DepartingInThePastFilter().filter(list);
 
         assertEquals(list2.get(0), list.get(2));
         assertEquals(list2.get(0).toString(), list.get(2).toString());
@@ -21,20 +24,20 @@ class FilterImplTest {
     }
 
     @Test
-    public void test2() {
-        List<Flight> list2 = filter.arrivalBeforeDepartureFilter(list);
+    @DisplayName("Получение списка перелетов у которых время прилета раньше времени вылета")
+    public void ArrivalBeforeDepartureTest() {
+        List<Flight> list2 = new ArrivalBeforeDepartureFilter().filter(list);
 
         assertEquals(list2.get(0), list.get(3));
-
     }
 
     @Test
-    public void test3() {
-        List<Flight> list2 = filter.moreThanTwoHoursGroundTimeFilter(list);
+    @DisplayName("Получение списка перелетов, где общее время, проведённое на земле, превышает два часа")
+    public void MoreThanTwoHoursGroundTimeTest() {
+        List<Flight> list2 = new MoreThanTwoHoursGroundTimeFilter().filter(list);
 
         assertEquals(list2.get(0), list.get(4));
         assertEquals(list2.get(1), list.get(5));
-
     }
 
 }
